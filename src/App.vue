@@ -1,8 +1,23 @@
 <template>
   <div id="app">
-    <img src="http://vuejs.org/images/logo.png">
-    <h1>{{ msg }}</h1>
-    <router-view></router-view>
+    
+    <nav>
+      <div class="nav-wrapper">
+        <a href="#" class="brand-logo">Blog</a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+          <router-link tag="li" to="/"><a>Home</a></router-link>
+          <router-link tag="li" to="/login"><a>Login</a></router-link>
+          <router-link tag="li" to="/addPost"><a>addPost</a></router-link>
+        </ul>
+      </div>
+    </nav>
+
+    <br>
+
+    <div class="container">
+      <router-view></router-view>
+    </div>
+
   </div>
 </template>
 
@@ -17,20 +32,8 @@
   }
 </script>
 
-<style scoped>
-  #app {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    text-align: center;
-    color: #2c3e50;
-    margin-top: 40px;
-  }
-
-  img {
-    width: 150px;
-    height: 150px;
-  }
-
-  h1, h2 {
-    font-weight: normal;
+<style>
+  body {
+    font-family: Helvetica, sans-serif;
   }
 </style>

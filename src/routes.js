@@ -1,9 +1,13 @@
+import Home from './Home.vue'
+
 const Routes = [
   {
     path: '/', 
-    component: {
-      template: '<b>root</b>'
-    }
+    redirect: '/home'
+  },
+  {
+    path: '/home', 
+    component: Home
   },
   {
     path: '/login', 

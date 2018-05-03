@@ -82,7 +82,10 @@ router.route('/users')
   }
 
   user.save(function(err) {
-    if (err) res.send(err);
+    if (err) {
+      res.send(err);
+      return;
+    }
     res.json(user);
   });
 });
@@ -152,9 +155,10 @@ router.route('/posts/:post_id?')
 .get(function(req, res){
   Post
   .find()
-  .sort([['data', 'descending']])
+  .sort([['date', 'descending']])
   .populate('user', 'name')
   .exec(function (err, posts){
+    console.log(posts)
     if (err) res.send(err);
     res.json(posts);
   });
@@ -165,10 +169,14 @@ router.route('/posts/:post_id?')
   post.text  = req.body.text;
   post.user  = req.body.user._id;
 
-  if (post.title == null) res.status(400).send('Título não pode ser nulo');
+  // Mongo está validando no back-end
+  //if (post.title == null) res.status(400).send('Título não pode ser nulo');
 
   post.save(function (err) {
-    if (err) res.send(err)
+    if (err) {
+      res.send(err);
+      return;
+    }
     res.json(post);
   });
 

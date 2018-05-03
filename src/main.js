@@ -10,6 +10,7 @@ Vue.use(VueRouter)
 Vue.use(VueResource)
 
 const router = new VueRouter({
+  //linkActiveClass: 'active',
   linkExactActiveClass: 'active',
   routes: Routes
 })
