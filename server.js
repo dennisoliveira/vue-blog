@@ -86,6 +86,7 @@ router.route('/users')
 router.route('/login')
 .post(function (req, res) {
 
+  // Opção de criar um novo usuário caso não exista
   /*if (req.body.isNew) {
     User.findOne({login: req.body.login}, 'name')
     .exec(function (err, user){
@@ -110,34 +111,72 @@ router.route('/login')
       }
     });
   } else {*/
-    User.findOne({
-      login: req.body.login,
-      password: req.body.password
-    }, 'name')
-    .exec(function (err, user) {
 
-      if (err) res.send(err);
+  User.findOne({
+    login: req.body.login,
+    password: req.body.password
+  }, 'name')
+  .exec(function (err, user) {
 
-      // Criado um objeto pois a formatação do original não funcionava
-      var newUser = {
-        _id: user._id,
-        name: user.name
-      };
+    if (err) res.send(err);
 
-      if (user != null) {
-        var token = jwt.sign(
-          newUser, 
-          secretkey,
-          {expiresIn: '1 day'}
-        );
+    // Criado um objeto pois a formatação do original não funcionava
+    var newUser = {
+      _id: user._id,
+      name: user.name
+    };
 
-        res.json({user: newUser, token: token});
-      } else {
-        res.status(400).send('Login/Senha incorretos')
-      }
+    if (user != null) {
+      var token = jwt.sign(
+        newUser, 
+        secretkey,
+        {expiresIn: '1 day'}
+      );
 
-    });
-  //}
+      res.json({user: newUser, token: token});
+    } else {
+      res.status(400).send('Login/Senha incorretos');
+    }
+
+  });
+
+});
+
+// Posts route
+router.route('posts/:post_id?')
+.get(function(req, res){
+  Post
+  .find()
+  .sort([['data', 'descending']])
+  .populate('user', 'name')
+  .exec(function (err, posts){
+    if (err) res.send(err);
+    res.json(posts);
+  });
+})
+.post(auth, function (req, res) {
+  var post = new Post();
+  post.title = req.body.title;
+  post.text  = req.body.text;
+  post.user  = req.body.user._id;
+
+  if (post.title == null) res.status(400).send('Título não pode ser nulo');
+
+  post.save(function (err) {
+    if (err) res.send(err)
+    res.json(post);
+  });
+
+})
+.delete(auth, function (req, res) {
+  Post.remove({
+    _id: req.params.post_id
+  }, function (err, post) {
+    if (err) res.send(err);
+    res.json({
+      message: 'Successfully deleted'
+    })
+  })
 });
 
 // Register router for use
@@ -148,7 +187,7 @@ var configServer = {
   host: 'localhost',
   port: 8080,
   output: true,
-  maxRetries: 3
+  maxRetries: 5
 }
 
 portCheck(configServer, function(isPortAvailable, availablePort, initialPort) {
