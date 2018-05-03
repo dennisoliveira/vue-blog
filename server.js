@@ -83,12 +83,61 @@ router.route('/users')
 
 // Login route
 router.route('/login')
-.post(function (req, res){
-  if (req.body.isNew) {
-    
-  }
-})
+.post(function (req, res) {
 
+  /*if (req.body.isNew) {
+    User.findOne({login: req.body.login}, 'name')
+    .exec(function (err, user){
+      if (err) res.send(err);
+
+      if (user != null) {
+        res.status(400).send('Login Existente');
+      } else {
+        var newUser = new User();
+        newUser.name = req.body.name;
+        newUser.login = req.body.login;
+        newUser.password = req.body.password;
+        newUser.save(function (err) {
+          if (err) res.send(err);
+
+          var token = jwt.sign(newUser, secretkey, {
+            expiresIn: "1 day"
+          });
+
+          res.json({user: newUser, token: token});
+        });
+      }
+    });
+  } else {*/
+    User.findOne({
+      login: req.body.login,
+      password: req.body.password
+    }, 'name')
+    .exec(function (err, user) {
+
+      if (err) res.send(err);
+
+      // Criado um objeto pois a formatação do original não funcionava
+      var newUser = {
+        _id: user._id,
+        name: user.name
+      };
+
+      if (user != null) {
+        var token = jwt.sign(
+          newUser, 
+          secretkey,
+          {expiresIn: '1 day'}
+        );
+
+        res.json({user: newUser, token: token});
+      } else {
+        res.status(400).send('Login/Senha incorretos')
+      }
+
+    });
+  //}
+});
 
 // Register router
 app.use('/api', router);
