@@ -62,10 +62,8 @@ router.get('/', function(req, res) {
 router.route('/users')
 .get(auth, function (req, res){
   User.find(function (err, users){
-    if (err)
-      res.send(err)
-
-    res.json(users)
+    if (err) res.send(err);
+    res.json(users);
   })
 })
 .post(function (req, res) {
@@ -74,11 +72,18 @@ router.route('/users')
   user.login = req.body.login;
   user.password = req.body.password;
 
-  user.save(function(err) {
-    if (err)
-      res.send(err)
+  // Validação simples
+  if (user.login == null) {
+    res.status(400).send('Login não pode ser nulo');
+    return;
+  } else if (user.password == null) {
+    res.status(400).send('Password não pode ser nulo');
+    return;
+  }
 
-    res.json(user)
+  user.save(function(err) {
+    if (err) res.send(err);
+    res.json(user);
   });
 });
 
@@ -143,7 +148,7 @@ router.route('/login')
 });
 
 // Posts route
-router.route('posts/:post_id?')
+router.route('/posts/:post_id?')
 .get(function(req, res){
   Post
   .find()
