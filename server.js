@@ -1,3 +1,4 @@
+var portCheck  = require('node-port-check');
 var express    = require('express');
 var app        = express();
 var bodyParser = require('body-parser');
@@ -139,11 +140,31 @@ router.route('/login')
   //}
 });
 
-// Register router
+// Register router for use
 app.use('/api', router);
 
 // Start server
-var port = process.env.PORT || 8080;
-app.listen(port, function(){
-  console.log('Listen: ' + port);
+var configServer = {
+  host: 'localhost',
+  port: 8080,
+  output: true,
+  maxRetries: 3
+}
+
+portCheck(configServer, function(isPortAvailable, availablePort, initialPort) {
+  
+  if (isPortAvailable) {
+
+    app.listen(availablePort, function() {
+      console.log('Server listen in: ' + availablePort);
+    });
+
+  } else {
+
+    console.log('Port is not available, last tried port was ', availablePort);
+    process.exit(0);
+
+  }
+
 });
+
