@@ -1,5 +1,10 @@
 <template>
   <div>
+
+    <div class="progress" v-show="showProgress">
+      <div class="indeterminate"></div>
+    </div>
+
     <form action="" class="col s12">
 
       <div class="row">
@@ -22,7 +27,7 @@
 
         <div class="input-field col s12">
           <i class="material-icons prefix">vpn_key</i>
-          <input type="text" id="password" v-model="user.password">
+          <input type="password" id="password" v-model="user.password">
           <label for="password">Password</label>
           <!--<div>
             <span class="chip red lighten-5 right" 
@@ -43,17 +48,32 @@
         </div>
 
         <div class="col s12">
-          <input type="checkbox" id="createaccount" v-model="user.isNew">
+          <input type="checkbox" id="createaccount" class="filled-in" 
+            v-model="user.isNew">
           <label for="createaccount">Create account?</label>
         </div>
 
+        <div class="input-field col s12">
+          <button 
+            class="waves-effect waves-light btn right"
+            @click="doLogin">
+            Enviar
+          </button>
+        </div>
+
       </div>
+
     </form>
+
   </div>
 </template>
 
 <script>
+
+  import Auth from './auth'
+
   export default {
+    name: 'login',
     data () {
       return {
         user: {
@@ -61,7 +81,31 @@
           password: '',
           login: '',
           isNew: false
-        }
+        },
+        showProgress: false
+      }
+    }, 
+    methods: {
+      doLogin: function(event) {
+        event.preventDefault()
+
+        this.showProgress = true
+
+        this.$http.post('/api/login', this.user)
+        .then(function (response) {
+
+          this.showProgress = false
+          Auth.setLogin(response.data)
+          this.$router.push('home')
+          Materialize.toast('Login realizado com sucesso!', 3000)
+
+        }, function(error) {
+
+          this.showProgress = false
+          Materialize.toast('Error: ' + error.data, 3000)
+
+        })
+
       }
     }
   }

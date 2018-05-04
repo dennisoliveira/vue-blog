@@ -26,6 +26,7 @@
 
 <script>
   export default {
+    name: 'home',
     data() {
       return {
         posts: null,
@@ -34,10 +35,9 @@
     },
     created: function() {
       this.showProgress = true;
-      this.$http.get('/api/posts').then(function (response){
+      this.$http.get('/api/posts').then(function (response) {
         this.showProgress = false;
         this.posts = response.data;
-        console.log(this.posts);
 
       }, function (error) {
         this.showProgress = false;

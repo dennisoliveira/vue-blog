@@ -94,6 +94,41 @@ router.route('/users')
 router.route('/login')
 .post(function (req, res) {
 
+  User.findOne({
+    login: req.body.login,
+    password: req.body.password
+  }, 'name')
+  .exec(function (err, user) {
+
+    if (err) {
+      res.status(500).send(err);
+      return;
+    }
+
+    if (user != null) {
+
+      // Criado um objeto pois a formatação do original não funcionava
+      var newUser = {
+        _id: user._id,
+        name: user.name
+      };
+
+      var token = jwt.sign(
+        newUser, 
+        secretkey,
+        {expiresIn: '1 day'}
+      );
+
+      res.json({user: newUser, token: token});
+
+    } else {
+
+      res.status(400).send('Login/Senha incorretos');
+      return;
+    }
+
+  });
+
   // Opção de criar um novo usuário caso não exista
   /*if (req.body.isNew) {
     User.findOne({login: req.body.login}, 'name')
@@ -118,35 +153,7 @@ router.route('/login')
         });
       }
     });
-  } else {*/
-
-  User.findOne({
-    login: req.body.login,
-    password: req.body.password
-  }, 'name')
-  .exec(function (err, user) {
-
-    if (err) res.send(err);
-
-    // Criado um objeto pois a formatação do original não funcionava
-    var newUser = {
-      _id: user._id,
-      name: user.name
-    };
-
-    if (user != null) {
-      var token = jwt.sign(
-        newUser, 
-        secretkey,
-        {expiresIn: '1 day'}
-      );
-
-      res.json({user: newUser, token: token});
-    } else {
-      res.status(400).send('Login/Senha incorretos');
-    }
-
-  });
+  }*/
 
 });
 
