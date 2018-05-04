@@ -32,7 +32,9 @@ router.use(function(req, res, next) {
 
 // Middleware: auth
 var auth = function(req, res, next) {
+  
   var token = req.body.token || req.query.token || req.headers['x-access-token'];
+
   if (token) {
     jwt.verify(token, secretkey, function(err, decoded) {
       if (err) {
@@ -191,13 +193,20 @@ router.route('/posts/:post_id?')
 
 })
 .delete(auth, function (req, res) {
+  
   Post.remove({
     _id: req.params.post_id
   }, function (err, post) {
-    if (err) res.send(err);
+    
+    if (err) {
+      res.send(err)
+      return;
+    }
+
     res.json({
       message: 'Successfully deleted'
     })
+
   })
 });
 
