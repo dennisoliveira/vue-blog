@@ -68,7 +68,8 @@
 </script>
 
 <style scoped>
-  [type="checkbox"]:not(:checked),
+  /* Bugfix para checkbox no windows 7 */
+  /*[type="checkbox"]:not(:checked),
   [type="checkbox"]:checked {
     position: static;
     opacity: 1;
@@ -77,7 +78,7 @@
   [type="checkbox"]+label:before,
   [type="checkbox"]:not(.filled-in)+label:after {
     content: initial;
-  }
+  }*/
 </style>
 
 
