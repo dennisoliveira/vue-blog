@@ -1,4 +1,5 @@
 import Home from './Home.vue'
+import Login from './Login.vue'
 
 const Routes = [
   {
@@ -11,9 +12,7 @@ const Routes = [
   },
   {
     path: '/login', 
-    component: {
-      template: '<b>login</b>'
-    }
+    component: Login
   },
   {
     path: '/logout', 
