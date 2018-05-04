@@ -169,8 +169,10 @@ router.route('/posts/:post_id?')
   post.text  = req.body.text;
   post.user  = req.body.user._id;
 
-  // Mongo está validando no back-end
-  //if (post.title == null) res.status(400).send('Título não pode ser nulo');
+  if (post.title == null) {
+    res.status(400).send('Título não pode ser nulo');
+    return;
+  }
 
   post.save(function (err) {
     if (err) {
