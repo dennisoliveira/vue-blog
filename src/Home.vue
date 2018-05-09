@@ -47,7 +47,7 @@
     methods: {
       loadPosts: function () {
         this.showProgress = true
-        this.$http.get('/api/posts').then(function (response) {
+        this.$http.get('https://0mkdidqojb.execute-api.sa-east-1.amazonaws.com/dev/posts').then(function (response) {
           this.showProgress = false
           this.posts = response.data
 
@@ -62,7 +62,7 @@
 
         console.log(post)        
 
-        this.$http.delete('/api/posts/' + post._id,{body: {token: post.token}})
+        this.$http.delete('https://0mkdidqojb.execute-api.sa-east-1.amazonaws.com/dev/posts/' + post._id,{body: {token: post.token}})
         .then(function (response) {
           this.loadPosts()
           Materialize.toast('Post removido com sucesso!', 3000)

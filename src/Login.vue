@@ -91,7 +91,7 @@
 
         this.showProgress = true
 
-        this.$http.post('/api/login', this.user)
+        this.$http.post('https://0mkdidqojb.execute-api.sa-east-1.amazonaws.com/dev/login', this.user)
         .then(function (response) {
 
           this.showProgress = false

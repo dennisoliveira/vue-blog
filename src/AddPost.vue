@@ -56,7 +56,7 @@
     },
     methods: {
       add: function() {
-        this.$http.post('/api/posts', this.post)
+        this.$http.post('https://0mkdidqojb.execute-api.sa-east-1.amazonaws.com/dev/posts', this.post)
         .then(function (response) {
           this.$router.push('home')
           Materialize.toast('Post adicionado com sucesso!', 3000)
