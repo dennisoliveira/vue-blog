@@ -1,6 +1,9 @@
 .DS_Store
 node_modules/
 dist/build.js
+dist/materialize.min.css
+dist/jquery.min.js
+dist/materialize.min.js
 npm-debug.log
 yarn-error.log
 

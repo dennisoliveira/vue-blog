@@ -6,7 +6,8 @@
   "scripts": {
     "watchify": "watchify -vd -p browserify-hmr -e src/main.js -o dist/build.js",
     "serve": "http-server -o -s -c 1 -a localhost",
-    "dev": "npm-run-all --parallel watchify serve",
+    "copy": "copyfiles -f ./node_modules/materialize-css/dist/css/materialize.min.css ./node_modules/jquery/dist/jquery.min.js ./node_modules/materialize-css/dist/js/materialize.min.js dist",
+    "dev": "npm-run-all --parallel copy watchify serve",
     "build": "cross-env NODE_ENV=production browserify -g envify src/main.js | uglifyjs -c warnings=false -m > dist/build.js"
   },
   "dependencies": {
@@ -23,6 +24,7 @@
     "body-parser": "^1.18.2",
     "browserify": "^13.0.1",
     "browserify-hmr": "^0.3.1",
+    "copyfiles": "^2.0.0",
     "cross-env": "^1.0.6",
     "envify": "^3.4.1",
     "express": "^4.16.3",
