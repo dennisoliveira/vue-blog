@@ -8,7 +8,8 @@
     "serve": "http-server -o -s -c 1 -a localhost",
     "copy": "copyfiles -f ./node_modules/materialize-css/dist/css/materialize.min.css ./node_modules/jquery/dist/jquery.min.js ./node_modules/materialize-css/dist/js/materialize.min.js dist",
     "dev": "npm-run-all --parallel copy watchify serve",
-    "build": "cross-env NODE_ENV=production browserify -g envify src/main.js | uglifyjs -c warnings=false -m > dist/build.js"
+    "build": "cross-env NODE_ENV=production browserify -g envify src/main.js | uglifyjs -c warnings=false -m > dist/build.js",
+    "deploy": "npm-run-all --parallel copy build"
   },
   "dependencies": {
     "materialize-css": "^0.100.2",
