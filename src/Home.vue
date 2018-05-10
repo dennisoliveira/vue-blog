@@ -60,9 +60,9 @@
         let login = Auth.getLogin()
         post.token = login.token
 
-        console.log(post)        
-
-        this.$http.delete('https://0mkdidqojb.execute-api.sa-east-1.amazonaws.com/dev/posts/' + post._id,{body: {token: post.token}})
+        this.$http.delete('https://0mkdidqojb.execute-api.sa-east-1.amazonaws.com/dev/posts/' + post._id,{
+          headers: {'x-access-token': post.token}
+        })
         .then(function (response) {
           this.loadPosts()
           Materialize.toast('Post removido com sucesso!', 3000)
