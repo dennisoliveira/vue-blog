@@ -55,7 +55,8 @@
       }
     },
     methods: {
-      add: function() {
+      add: function(event) {
+        event.preventDefault()
         this.$http.post('https://0mkdidqojb.execute-api.sa-east-1.amazonaws.com/dev/posts', this.post)
         .then(function (response) {
           this.$router.push('home')
